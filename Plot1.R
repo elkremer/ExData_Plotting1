@@ -1,0 +1,8 @@
+library(dplyr)
+hpc<-tbl_df(read.table("household_power_consumption.txt", sep = ";", na.strings = c("?",""), header = TRUE))
+hpc$Date <- as.Date(hpc$Date, format = "%d/%m/%Y")
+days<-filter(hpc, Date == "2007-02-01" | Date == "2007-02-02")
+days$Time <- strptime(paste(days$Date, days$Time), format = "%Y-%m-%d %H:%M:%S")
+hist(days$Global_active_power, xlab = "Global Active Power (kilowatts)", ylab = "Frequency", main = "Global Active Power", col = "red")
+dev.copy(png, file="Plot1.png")
+dev.off()
